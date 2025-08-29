@@ -56,11 +56,11 @@ fi
 log_info "2단계: 백엔드 서버 시작 중..."
 
 # 기존 백엔드 프로세스 종료
-pkill -f "python.*main" 2>/dev/null
+pkill -f "uvicorn.*main:app" 2>/dev/null
 sleep 1
 
 # 백엔드 서버 백그라운드 실행
-nohup python main.py > backend.log 2>&1 &
+nohup uvicorn main:app --host 0.0.0.0 --port 8000 > backend.log 2>&1 &
 BACKEND_PID=$!
 echo "   🔧 백엔드 서버 시작됨 (PID: $BACKEND_PID, 로그: backend.log)"
 
@@ -141,7 +141,7 @@ echo "📋 유용한 명령어:"
 echo "   - 로그 확인: tail -f backend/llm.log"
 echo "   - 로그 확인: tail -f backend/backend.log"
 echo "   - 로그 확인: tail -f frontend/frontend.log"
-echo "   - 프로세스 확인: ps aux | grep python"
+echo "   - 프로세스 확인: ps aux | grep -E '(python.*llm_server|uvicorn.*main:app|npm.*dev)'"
 echo "   - 포트 확인: sudo netstat -tlnp | grep -E ':(8000|8001|5173)'"
 
 echo ""

@@ -10,7 +10,7 @@ cd /home/jme09042/omok
 # 1. 기존 프로세스 정리
 echo "🛑 기존 프로세스 정리 중..."
 pkill -f "python.*llm_server" 2>/dev/null
-pkill -f "python.*main" 2>/dev/null
+pkill -f "uvicorn.*main:app" 2>/dev/null
 pkill -f "npm.*dev" 2>/dev/null
 sleep 2
 
@@ -23,7 +23,7 @@ echo "   ✅ LLM 서버 시작됨 (PID: $!)"
 
 # 3. 백엔드 서버 백그라운드 실행
 echo "🔧 백엔드 서버 시작 중..."
-nohup python main.py > backend.log 2>&1 &
+nohup uvicorn main:app --host 0.0.0.0 --port 8000 > backend.log 2>&1 &
 echo "   ✅ 백엔드 서버 시작됨 (PID: $!)"
 
 # 4. 프론트엔드 서버 백그라운드 실행

@@ -55,7 +55,7 @@ fi
 
 # 백엔드를 백그라운드에서 실행
 echo "🔧 백엔드 서버 시작..."
-python main.py &
+nohup uvicorn main:app --host 0.0.0.0 --port 8000 > backend.log 2>&1 &
 BACKEND_PID=$!
 echo "✅ 백엔드 서버 시작됨 (PID: $BACKEND_PID)"
 

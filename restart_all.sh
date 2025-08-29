@@ -43,7 +43,7 @@ fi
 
 # 백엔드 서버 프로세스 종료
 log_info "   🔧 백엔드 서버 프로세스 종료 중..."
-pkill -f "python.*main" 2>/dev/null
+pkill -f "uvicorn.*main:app" 2>/dev/null
 if [ $? -eq 0 ]; then
     log_success "   백엔드 서버 프로세스 종료됨"
 else
@@ -87,14 +87,14 @@ log_info "4단계: 프로세스 정리 상태 확인..."
 
 # 남아있는 프로세스 확인
 REMAINING_LLM=$(ps aux | grep "python.*llm_server" | grep -v grep | wc -l)
-REMAINING_BACKEND=$(ps aux | grep "python.*main" | grep -v grep | wc -l)
+REMAINING_BACKEND=$(ps aux | grep "uvicorn.*main:app" | grep -v grep | wc -l)
 REMAINING_FRONTEND=$(ps aux | grep "npm.*dev\|node.*vite" | grep -v grep | wc -l)
 
 if [ $REMAINING_LLM -eq 0 ] && [ $REMAINING_BACKEND -eq 0 ] && [ $REMAINING_FRONTEND -eq 0 ]; then
     log_success "   모든 프로세스가 정리되었습니다"
 else
     log_warning "   일부 프로세스가 여전히 실행 중입니다"
-    ps aux | grep -E "(llm_server|main|npm.*dev|node.*vite)" | grep -v grep
+    ps aux | grep -E "(llm_server|uvicorn.*main:app|npm.*dev|node.*vite)" | grep -v grep
 fi
 
 # 5단계: 포트 상태 확인
@@ -126,7 +126,7 @@ else
     echo ""
     echo "📋 수동 시작 가이드:"
     echo "   1. 터미널 1: cd backend && . .venv/bin/activate && python llm_server.py"
-    echo "   2. 터미널 2: cd backend && . .venv/bin/activate && python main.py"
+    echo "   2. 터미널 2: cd backend && . .venv/bin/activate && uvicorn main:app --host 0.0.0.0 --port 8000"
     echo "   3. 터미널 3: cd frontend && npm run dev -- --host 0.0.0.0"
 fi
 
