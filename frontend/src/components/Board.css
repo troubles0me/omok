@@ -1,0 +1,33 @@
+/* frontend/src/components/Board.css */
+.board {
+  display: grid;
+  /* ⬇️ 1fr 대신 픽셀 변수 사용 (App.css에서 --cell=30px 선언) */
+  grid-template-columns: repeat(var(--n), var(--cell));
+  grid-template-rows: repeat(var(--n), var(--cell));
+  grid-auto-flow: row;             /* ✅ 행 우선 고정 */
+}
+.board::before,
+.board::after,
+.hoshi,
+.stone { pointer-events: none; }   /* ✅ 셀만 클릭 받도록 */
+.cell  { cursor: pointer; }
+
+/* 고스트 돌 스타일 */
+.stone.ghost {
+  opacity: 0.6;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+}
+
+/* 비활성화된 셀 */
+.cell.disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* 선택: 보드 감싸는 래퍼 정렬 */
+.board-wrap { width: fit-content; margin: 0 auto; }

@@ -1,0 +1,246 @@
+/* frontend/src/App.css */
+:root{
+  --cell: 30px;     /* 격자 한 칸 */
+  --stone: 26px;    /* 돌 지름 */
+}
+
+.board {
+  background-color: #deb887;
+  background-image:
+    linear-gradient(to right, #a0522d 1px, transparent 1px),
+    linear-gradient(to bottom, #a0522d 1px, transparent 1px);
+  background-size: var(--cell) var(--cell);
+
+  /* ⬇️ 교차점 정렬 핵심 */
+  background-position: calc(var(--cell)/2) calc(var(--cell)/2);
+  background-origin: content-box;
+  background-clip: content-box;
+
+  padding: calc(var(--cell)/2);
+  border: 2px solid #a0522d;
+  border-radius: 6px;
+  position: relative;
+  box-sizing: content-box;
+  width: fit-content;
+}
+
+/* 셀/돌 */
+.cell {
+  width: var(--cell);
+  height: var(--cell);
+  position: relative;
+  cursor: pointer;
+}
+.cell:hover::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%; height: 85%;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.stone {
+  width: var(--stone); height: var(--stone);
+  border-radius: 50%;
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.35);
+}
+.stone.black {
+  background: radial-gradient(circle at 30% 30%, #4a4a4a, #121212);
+  box-shadow:
+    inset -2px -2px 6px rgba(255,255,255,0.12),
+    0 2px 4px rgba(0,0,0,0.35);
+}
+.stone.white {
+  background: radial-gradient(circle at 30% 30%, #ffffff, #dddddd);
+  border: 1px solid #c9c9c9;
+  box-shadow:
+    inset -2px -2px 6px rgba(0,0,0,0.06),
+    0 2px 4px rgba(0,0,0,0.25);
+}
+
+/* ⭐️ 별점(화점) — 상대 Board.jsx에서 추가된 요소 */
+.hoshi{
+  width: 6px; height: 6px;
+  background: #2f1e14;
+  border-radius: 50%;
+  /* CSS Grid에서 중앙 정렬 */
+  place-self: center;
+  /* 교차점 그림자 약간 */
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+/* 게임 컨테이너 */
+.game-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.back-button {
+  padding: 8px 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+}
+
+.game-info {
+  display: flex;
+  gap: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.game-content {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 30px;
+  align-items: start;
+}
+
+.game-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.ai-assist {
+  text-align: center;
+}
+
+.assist-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.assist-button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.assist-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.game-sidebar {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e9ecef;
+}
+
+.game-status h3,
+.chat-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 16px;
+}
+
+.game-status p {
+  margin: 8px 0;
+  color: #666;
+}
+
+.winner {
+  font-weight: bold;
+  color: #28a745 !important;
+}
+
+.message {
+  font-style: italic;
+  color: #495057;
+}
+
+.chat-section {
+  margin-top: 25px;
+}
+
+.chat-messages {
+  height: 200px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.chat-message {
+  margin-bottom: 8px;
+  padding: 5px 0;
+}
+
+.sender {
+  font-weight: bold;
+  color: #495057;
+  margin-right: 8px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.chat-input button {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.chat-input button:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.chat-input button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* 기존 채팅 스타일 유지 */
+.chat-container { margin-top: 20px; width: 619px; height: 200px; border: 1px solid #ccc; background-color: #fff; padding: 10px; display: flex; flex-direction: column; box-sizing: border-box; }
+.messages { flex-grow: 1; overflow-y: auto; text-align: left; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+.message { margin-bottom: 5px; word-wrap: break-word; }
+.chat-input { display: flex; }
+.chat-input input { flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }
+.chat-input button { padding: 8px 12px; margin-left: 10px; border: none; background-color: #4CAF50; color: white; cursor: pointer; border-radius: 4px; font-size: 1em; }
+.chat-input button:hover { background-color: #45a049; }
